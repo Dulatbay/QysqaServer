@@ -1,0 +1,31 @@
+services:
+  mongo:
+    image: mongo:5.0
+    container_name: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: user_qit
+      MONGO_INITDB_ROOT_PASSWORD: 123
+    ports:
+      - "27017:27017"
+    networks:
+      - app-network
+    volumes:
+      - mongodb_data:/data/db
+    healthcheck:
+      test: [ "CMD", "mongo", "--eval", "db.runCommand('ping').ok" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  mongodb_data:
+    driver: local
+  backup:
+    driver: local
